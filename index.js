@@ -4,6 +4,14 @@ const axiosCls = require('axios');
 const _private = {
     obj: {
         options: Symbol('options')
+    },
+    fnc: {
+        didTokenExpire: Symbol('didTokenExpire'),
+        getAccessToken: Symbol('getAccessToken'),
+        getRefreshToken: Symbol('getRefreshToken'),
+        refreshToken: Symbol('refreshToken'),
+        readTokens: Symbol('readTokens'),
+        writeTokens: Symbol('writeTokens')
     }
 };
 let axios;
@@ -27,7 +35,7 @@ module.exports = class GlovoAPI {
             }
         });
 
-        this._readTokens();
+        this[_private.fnc.readTokens]();
     }
 
     /**
@@ -36,8 +44,8 @@ module.exports = class GlovoAPI {
      */
     auth() {
         return new Promise((resolve, reject) => {
-            if(this._didTokenExpire()) {
-                this._refreshToken().then(resolve).catch(reject);
+            if(this[_private.fnc.didTokenExpire]()) {
+                this[_private.fnc.refreshToken]().then(resolve).catch(reject);
             } else {
                 resolve();
             }
@@ -117,7 +125,7 @@ module.exports = class GlovoAPI {
                 };
                 axios.get(this[_private.obj.options].BASE_URL + "/v3/customer/orders", {
                     headers: {
-                        authorization: this._getAccessToken()
+                        authorization: this[_private.fnc.getAccessToken]()
                     },
                     params: options
                 }).then(res => {
@@ -139,7 +147,7 @@ module.exports = class GlovoAPI {
             this.auth().then(() => {
                 axios.get(this[_private.obj.options].BASE_URL + "/v3/eta/orders/"+ orderId +"/tracking", {
                     headers: {
-                        authorization: this._getAccessToken()
+                        authorization: this[_private.fnc.getAccessToken]
                     }
                 }).then(res => {
                     resolve(res.data);
@@ -150,21 +158,22 @@ module.exports = class GlovoAPI {
         });
     }
 
-    // private functions
-    _didTokenExpire() {
+    // PRIVATE FUNCTIONS //
+
+    [_private.fnc.didTokenExpire]() {
         const now = Math.floor((new Date()).getTime() / 1000);
         return !expiresAt || now >= expiresAt;
     }
 
-    _getAccessToken() {
+    [_private.fnc.getAccessToken]() {
         return accessToken;
     }
 
-    _getRefreshToken() {
+    [_private.fnc.getRefreshToken]() {
         return refreshToken;
     }
 
-    _readTokens() {
+    [_private.fnc.readTokens]() {
         try {
             let data = fs.readFileSync("./token.json", 'utf8');
             data = JSON.parse(data);
@@ -172,12 +181,12 @@ module.exports = class GlovoAPI {
             accessToken = data.accessToken;
             expiresAt = data.expiresAt;
         } catch {
-            this._writeTokens();
+            this[_private.fnc.writeTokens]();
             throw new Error("Refresh token is required! Please update './token.json' file!");
         }
     }
 
-    _writeTokens() {
+    [_private.fnc.writeTokens]() {
         fs.writeFileSync("./token.json", JSON.stringify({
             accessToken: accessToken,
             refreshToken: refreshToken,
@@ -185,10 +194,10 @@ module.exports = class GlovoAPI {
         }, null, 2));
     }
 
-    _refreshToken() {
+    [_private.fnc.refreshToken]() {
         return new Promise((resolve, reject) => {
             let options = {
-                refreshToken: this._getRefreshToken()
+                refreshToken: this[_private.fnc.getRefreshToken]()
             };
 
             axios.post(this[_private.obj.options].BASE_URL + "/oauth/refresh", options).then(res => {
@@ -196,7 +205,7 @@ module.exports = class GlovoAPI {
                 refreshToken = res.data.refreshToken;
                 expiresAt = Math.floor((new Date()).getTime() / 1000) + res.data.expiresIn;
 
-                this._writeTokens();
+                this[_private.fnc.writeTokens]();
 
                 resolve();
             }).catch(res => {
