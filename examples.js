@@ -49,6 +49,9 @@ glovo.getOrders().then((result) => {
     // last order is result[0]
     orderId = result[0].id;
     // track each minute
+    console.log("got order id", orderId);
+
+    trackOrder();
     orderInterval = setInterval(trackOrder, 60 * 1000);
 }).catch((err) => {
     console.error("ERR", err);

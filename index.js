@@ -147,7 +147,7 @@ module.exports = class GlovoAPI {
             this.auth().then(() => {
                 axios.get(this[_private.obj.options].BASE_URL + "/v3/eta/orders/"+ orderId +"/tracking", {
                     headers: {
-                        authorization: this[_private.fnc.getAccessToken]
+                        authorization: this[_private.fnc.getAccessToken]()
                     }
                 }).then(res => {
                     resolve(res.data);
