@@ -86,20 +86,25 @@ module.exports = class GlovoAPI {
         options = Object.assign({
             category: "RESTAURANT"
         }, options);
+
         // TODO: change lat/lng to autodetect
-        const lat = options.lat;
-        const lng = options.lng;
+        if(!options.lat || !options.lng){
+            throw new Error("Missing LatLng for getStores!");
+        }
+
+        const position = {
+            lat: options.lat,
+            lng: options.lng
+        };
         delete options.lat;
         delete options.lng;
 
         return new Promise((resolve, reject) => {
-            // const lat = ;
-            // const lng = ;
             axios.get(this[_private.obj.options].BASE_URL + "/v3/stores", {
                 headers: {
                     "glovo-delivery-location-accuracy": 0,
-                    "glovo-delivery-location-latitude": lat,
-                    "glovo-delivery-location-longitude": lng,
+                    "glovo-delivery-location-latitude": position.lat,
+                    "glovo-delivery-location-longitude": position.lng,
                     "glovo-delivery-location-timestamp": (new Date()).getTime()
                 },
                 params: options
@@ -116,13 +121,14 @@ module.exports = class GlovoAPI {
      * @returns {Promise<Order>}
      */
     getOrders() {
+        const options = {
+            offset: 0,
+            limit: 12,
+            sort: 'desc'
+        };
+
         return new Promise((resolve, reject) => {
             this.auth().then(() => {
-                const options = {
-                    offset: 0,
-                    limit: 12,
-                    sort: 'desc'
-                };
                 axios.get(this[_private.obj.options].BASE_URL + "/v3/customer/orders", {
                     headers: {
                         authorization: this[_private.fnc.getAccessToken]()
@@ -177,10 +183,12 @@ module.exports = class GlovoAPI {
         try {
             let data = fs.readFileSync("./token.json", 'utf8');
             data = JSON.parse(data);
+
             refreshToken = data.refreshToken;
             accessToken = data.accessToken;
             expiresAt = data.expiresAt;
         } catch {
+            // create the dummy file
             this[_private.fnc.writeTokens]();
             throw new Error("Refresh token is required! Please update './token.json' file!");
         }
@@ -195,11 +203,11 @@ module.exports = class GlovoAPI {
     }
 
     [_private.fnc.refreshToken]() {
-        return new Promise((resolve, reject) => {
-            let options = {
-                refreshToken: this[_private.fnc.getRefreshToken]()
-            };
+        const options = {
+            refreshToken: this[_private.fnc.getRefreshToken]()
+        };
 
+        return new Promise((resolve, reject) => {
             axios.post(this[_private.obj.options].BASE_URL + "/oauth/refresh", options).then(res => {
                 accessToken = res.data.accessToken;
                 refreshToken = res.data.refreshToken;
