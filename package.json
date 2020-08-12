@@ -1,14 +1,23 @@
 {
-  "name": "glovo-api",
-  "version": "0.1b",
+  "name": "@lynxaegon/glovo-api",
+  "version": "0.2",
   "description": "",
   "main": "index.js",
+  "dependencies": {
+    "axios": "^0.19.2"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Andrei Vaduva",
-  "license": "MIT",
-  "dependencies": {
-    "axios": "^0.19.2"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lynxaegon/glovo-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lynxaegon/glovo-api/issues"
+  },
+  "homepage": "https://github.com/lynxaegon/glovo-api#readme"
 }

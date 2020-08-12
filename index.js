@@ -32,6 +32,9 @@ module.exports = class GlovoAPI {
             headers: {
                 "Connection": "keep-alive",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
+				'glovo-app-platform': 'web',
+				'glovo-app-type': 'customer',
+				'glovo-language-code': 'en'
             }
         });
 
@@ -141,6 +144,27 @@ module.exports = class GlovoAPI {
                 });
             }).catch(reject);
         });
+    }
+
+	/**
+	 * Returns order details
+     * @Param orderUrn - format: glv:order:{UUIDv4}
+	 * @returns {Promise<Order>}
+	 */
+    getOrderDetails(orderUrn) {
+		return new Promise((resolve, reject) => {
+			this.auth().then(() => {
+				axios.get(this[_private.obj.options].BASE_URL + "/v3/orders/" + orderUrn, {
+					headers: {
+						authorization: this[_private.fnc.getAccessToken]()
+					}
+				}).then(res => {
+					resolve(res.data);
+				}).catch(res => {
+					reject(res.response.data);
+				});
+			}).catch(reject);
+		});
     }
 
     /**
