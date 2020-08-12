@@ -21,11 +21,11 @@ let refreshToken = false;
 let expiresAt = false;
 
 module.exports = class GlovoAPI {
-    constructor(tokenPath) {
+    constructor(tokensPath) {
         this[_private.obj.options] = {
              BASE_URL: "https://api.glovoapp.com"
         };
-        this._tokensPath = tokensPath || "./token.json";
+        this._tokensPath = tokensPath || "./tokens.json";
 
         axios = axiosCls.create({
             withCredentials: true,
