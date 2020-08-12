@@ -21,10 +21,11 @@ let refreshToken = false;
 let expiresAt = false;
 
 module.exports = class GlovoAPI {
-    constructor() {
+    constructor(tokenPath) {
         this[_private.obj.options] = {
              BASE_URL: "https://api.glovoapp.com"
         };
+        this._tokensPath = tokensPath || "./token.json";
 
         axios = axiosCls.create({
             withCredentials: true,
@@ -205,7 +206,7 @@ module.exports = class GlovoAPI {
 
     [_private.fnc.readTokens]() {
         try {
-            let data = fs.readFileSync("./token.json", 'utf8');
+            let data = fs.readFileSync(this._tokensPath, 'utf8');
             data = JSON.parse(data);
 
             refreshToken = data.refreshToken;
@@ -214,12 +215,12 @@ module.exports = class GlovoAPI {
         } catch {
             // create the dummy file
             this[_private.fnc.writeTokens]();
-            throw new Error("Refresh token is required! Please update './token.json' file!");
+            throw new Error("Refresh token is required! Please update '"+ this._tokensPath +"' file!");
         }
     }
 
     [_private.fnc.writeTokens]() {
-        fs.writeFileSync("./token.json", JSON.stringify({
+        fs.writeFileSync(this._tokensPath, JSON.stringify({
             accessToken: accessToken,
             refreshToken: refreshToken,
             expiresAt: expiresAt
