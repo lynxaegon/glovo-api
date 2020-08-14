@@ -38,7 +38,7 @@ const GlovoAPI = require("glovo-api");
 const glovo = new GlovoAPI("./tokens.json");
 
 glovo.getLatLngFromAddress("Bucharest", "Bulevardul Unirii 1").then((result) => {
-        console.log(result.lat, result.lng);
+    console.log(result.lat, result.lng);
 }).catch(console.error);
 ```
 
@@ -48,11 +48,11 @@ const GlovoAPI = require("glovo-api");
 const glovo = new GlovoAPI("./tokens.json");
 
 glovo.getLatLngFromAddress("Bucharest", "Bulevardul Unirii 1").then((result) => {
-	glovo.setLocation(result);
+    glovo.setLocation(result);
     // order.id
-	glovo.getStore(39537)
+    glovo.getStore(39537)
         .then(console.log)
-        .catch(console.error);```
+        .catch(console.error);
 }).catch(console.error);
 ```
 #### getStores
@@ -64,7 +64,7 @@ glovo.getLatLngFromAddress("Bucharest", "Bulevardul Unirii 1").then((result) => 
     glovo.setLocation(result);
     glovo.getStores()
         .then(console.log)
-        .catch(console.error);```
+        .catch(console.error);
 }).catch(console.error);
 ```
 
@@ -78,7 +78,7 @@ glovo.getLatLngFromAddress("Bucharest", "Bulevardul Unirii 1").then((result) => 
     // returns last 12 orders in desceding order (first element is the last order)
     glovo.getOrders()
         .then(console.log)
-        .catch(console.error);```
+        .catch(console.error);
 }).catch(console.error);
 ```
 
