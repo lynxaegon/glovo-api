@@ -115,7 +115,7 @@ glovo.getLatLngFromAddress("Bucharest", "Bulevardul Unirii 1").then((result) => 
 }).catch(console.error);
 ```
 
-##### More examples in **examples.js**
+##### More in **examples.js**
 
 ## License
 MIT
