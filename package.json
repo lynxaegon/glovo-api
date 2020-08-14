@@ -1,6 +1,6 @@
 {
   "name": "@lynxaegon/glovo-api",
-  "version": "0.2.2",
+  "version": "0.3",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -14,8 +14,8 @@
     "type": "git",
     "url": "git+https://github.com/lynxaegon/glovo-api.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Andrei Vaduva",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/lynxaegon/glovo-api/issues"
   },
