@@ -2,7 +2,7 @@
 
 ## Installation
 ```javascript
-npm install @lyxaegon/glovo-api
+npm install @lynxaegon/glovo-api
 ```
 
 ### How to obtain access token
