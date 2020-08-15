@@ -1,8 +1,8 @@
-#Glovo Customer API
+# Glovo Customer API
 
 ## Installation
 ```javascript
-	npm install @lyxaegon/glovo-api
+npm install @lyxaegon/glovo-api
 ```
 
 ### How to obtain access token
