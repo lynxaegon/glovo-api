@@ -56,12 +56,12 @@ module.exports = class GlovoAPI {
 	 */
 	auth(required) {
 		return new Promise((resolve, reject) => {
+			if (!this.currentLocation) {
+				reject("Missing current location! Did you forget to setLocation(position)?");
+				return;
+			}
+
 			if (!required) {
-				// do extra checks
-				if (!this.currentLocation) {
-					reject("Missing current location! Did you forget to setLocation(position)?");
-					return;
-				}
 				resolve();
 			} else {
 				if (this[_private.fnc.didTokenExpire]()) {
