@@ -27,13 +27,6 @@ module.exports = class GlovoAPI {
 		};
 		this._tokens = tokens || "./tokens.json";
 		this.currentLocation = false;
-		if(typeof this._tokens == 'object') {
-			this._tokens = Object.assign({
-				accessToken: false,
-				refreshToken: false,
-				expiresAt: false
-			}, this._tokens);
-		}
 
 		axios = axiosCls.create({
 			withCredentials: true,
