@@ -1,5 +1,7 @@
 # Glovo Customer API
 
+An unofficial reversed engineered Glovo Client API
+
 ## Installation
 ```javascript
 npm install @lynxaegon/glovo-api
